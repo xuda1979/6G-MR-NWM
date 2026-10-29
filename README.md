@@ -17,7 +17,8 @@ Authors are blank in the manuscript and PDF metadata.
 [中文进展报告](docs/PROGRESS_REPORT_CN_2026-10-23.md) ·
 [架构与多时间尺度详解](docs/ARCHITECTURE_CN.md) ·
 [公开免费真实数据集](docs/REAL_DATASETS_CN.md) ·
-[规划器动作与公开动作数据核查](docs/PLANNER_ACTIONS_AND_DATA_CN.md) ·
+[基站规划器动作设计](docs/PLANNER_ACTIONS_CN.md) ·
+[公开动作数据核查与训练方案](docs/PLANNER_ACTIONS_AND_DATA_CN.md) ·
 [Measured results](results/SUMMARY.md) · [Review and corrections](docs/REVIEW.md) ·
 [Reproduction protocol](docs/REPRODUCIBILITY.md) ·
 [Current code review](docs/REVIEW_2026_10.md)
@@ -44,6 +45,8 @@ See [language-foundation inputs and timescales](docs/LANGUAGE_FOUNDATION.md).
 
 The paper now distinguishes action-conditioned dynamics, a search-based planner,
 and an optional learned policy, and defines a bounded RAN action contract.
+The standalone [planner action design](docs/PLANNER_ACTIONS_CN.md) specifies
+action families, control ownership, execution records, and acceptance criteria.
 Public beam-selection labels and Colosseum resource/scheduler configurations
 provide restricted supervision, with RF-emulator evidence kept separate from
 field measurements. The [action-data audit](docs/PLANNER_ACTIONS_AND_DATA_CN.md)
