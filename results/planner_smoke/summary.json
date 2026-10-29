@@ -1,0 +1,346 @@
+{
+  "action_spec": {
+    "enabled": true,
+    "integer_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "lower": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "max_delta": null,
+    "name": "two_slice_budget_scheduler_v1",
+    "names": [
+      "slice0_blocks",
+      "slice1_blocks",
+      "slice0_scheduler",
+      "slice1_scheduler"
+    ],
+    "sum_indices": [
+      0,
+      1
+    ],
+    "sum_limit": 4.0,
+    "units": [
+      "abstract_blocks",
+      "abstract_blocks",
+      "rr0_pf1",
+      "rr0_pf1"
+    ],
+    "upper": [
+      4.0,
+      4.0,
+      1.0,
+      1.0
+    ]
+  },
+  "evidence": "simulated_only",
+  "initial_state": {
+    "average_rates": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "cursors": [
+      0,
+      0
+    ],
+    "queues": [
+      3.8896481606504056,
+      4.378930617559858,
+      2.2823703686876553,
+      2.9102037878735763
+    ],
+    "served": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "limits": [
+    "Exact toy simulator predicts slice consequences; no learned slice model was trained.",
+    "This smoke checks machinery, not statistical gains or sim-to-real transfer.",
+    "No field actions, RIC/E2 integration, deterministic deadline or NPU validation."
+  ],
+  "measurement_contract": "bounded-planner-synthetic-smoke-v1",
+  "planner_config": {
+    "discount": 1.0,
+    "horizon": 2,
+    "max_sequences": 512,
+    "steps": 4,
+    "switch_cost": 0.0
+  },
+  "policies": [
+    {
+      "decisions": [
+        {
+          "considered": 20,
+          "evaluated": 20,
+          "objective": 0.22546178708097478,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              3.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        },
+        {
+          "considered": 20,
+          "evaluated": 20,
+          "objective": 1.351133687205694,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              2.0,
+              2.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        },
+        {
+          "considered": 20,
+          "evaluated": 20,
+          "objective": 1.9690306981846124,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              3.0,
+              1.0,
+              1.0,
+              0.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        },
+        {
+          "considered": 20,
+          "evaluated": 20,
+          "objective": 1.760975138437131,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              1.0,
+              3.0,
+              1.0,
+              0.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        }
+      ],
+      "final_queue": 3.697815673698003,
+      "policy": "greedy",
+      "predictor": "exact_two_slice_simulator",
+      "return": 5.3066013109084125,
+      "served_payload": 18.728167485986653,
+      "source": "simulated",
+      "steps": 4,
+      "unique_applied_actions": 4
+    },
+    {
+      "decisions": [
+        {
+          "considered": 400,
+          "evaluated": 400,
+          "objective": 1.5765954742866688,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              3.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            [
+              2.0,
+              2.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        },
+        {
+          "considered": 400,
+          "evaluated": 400,
+          "objective": 3.4078097030354453,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              2.0,
+              2.0,
+              1.0,
+              1.0
+            ],
+            [
+              3.0,
+              1.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        },
+        {
+          "considered": 400,
+          "evaluated": 400,
+          "objective": 3.8124954241817166,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              3.0,
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              3.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        },
+        {
+          "considered": 400,
+          "evaluated": 400,
+          "objective": 3.991437796573241,
+          "reason": "exhaustive supplied-candidate search",
+          "rejected": 0,
+          "sequence": [
+            [
+              0.0,
+              4.0,
+              0.0,
+              0.0
+            ],
+            [
+              2.0,
+              2.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "status": "planned",
+          "truncated": false
+        }
+      ],
+      "final_queue": 3.9189005289693544,
+      "policy": "mpc",
+      "predictor": "exact_two_slice_simulator",
+      "return": 4.988967853403595,
+      "served_payload": 18.507082630715303,
+      "source": "simulated",
+      "steps": 4,
+      "unique_applied_actions": 4
+    },
+    {
+      "decisions": [],
+      "final_queue": 1.5371758604876513,
+      "policy": "coverage",
+      "predictor": "exact_two_slice_simulator",
+      "return": 15.918893209465198,
+      "served_payload": 56.74812819884965,
+      "source": "simulated",
+      "steps": 20,
+      "unique_applied_actions": 20
+    }
+  ],
+  "reference_probe": {
+    "checkpoint_sha256": "87bc48adf3d62420746e224168f7105d1f3b3f3d6256e8dd1dc8aa3b5d2685de",
+    "field_control_evidence": false,
+    "plan": {
+      "considered": 36,
+      "evaluated": 36,
+      "objective": 1.3109002709388733,
+      "reason": "exhaustive supplied-candidate search",
+      "rejected": 0,
+      "sequence": [
+        [
+          0.4,
+          0.4
+        ],
+        [
+          0.4,
+          0.4
+        ]
+      ],
+      "status": "planned",
+      "truncated": false
+    },
+    "purpose": "existing_reference_checkpoint_interface_smoke_only",
+    "seed": 11,
+    "variant": "full"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "torch": "2.5.1+cpu"
+  },
+  "scenario": {
+    "alpha": 0.2,
+    "arrivals": [
+      0.47142773210589123,
+      0.5358634316482976,
+      0.7545263504142377,
+      0.4793900420598641
+    ],
+    "rates": [
+      1.2617619095934067,
+      1.3810772432748455,
+      0.7769905157823149,
+      1.2678629585627084
+    ],
+    "step_seconds": 1.0,
+    "total_blocks": 4
+  },
+  "scheduler_codes": {
+    "0": "round_robin",
+    "1": "proportional_fair_score"
+  },
+  "seed": 11,
+  "simulator_version": "two-slice-fluid-v1",
+  "source_sha256": {
+    "scripts/planner_demo.py": "c8bb3fbdbde9be7efb5ff8a56a0a64202c587cb2f8f8654ef8a3ca3aaf690e06",
+    "src/mr_nwm/action_space.py": "2431a505c18ccab457cf996b0bc5b6758dbc7b90f0ffb464fdd181a8e859a5bf",
+    "src/mr_nwm/control_planner.py": "261210adf39f18d4e4995edacb0504b2b928ed77a3e466abe850b17ad4d1450f",
+    "src/mr_nwm/control_records.py": "7076df7d6935ea521dc470465be6ac2586f4e03b953d4948b94e84471664261d",
+    "src/mr_nwm/data.py": "f4f3c27dcfe12f6b6c599fd86ee64c6d34a46f90569f72e9ec8512978887c478",
+    "src/mr_nwm/model.py": "e60f0e1733b8b1e376e43331422adc146160d67661997870ca3bf327fc2c8c8c",
+    "src/mr_nwm/planning_adapters.py": "8125d2a3eee8cc3b9fb4d4b32e3bf6bff5c8e15dbc9f277c5f57053a442fc704",
+    "src/mr_nwm/slicing.py": "9cede26012faf6fdc237e19d556d482a23800612b28179d436d960002bf91233"
+  },
+  "split_group": "scenario-seed-11",
+  "split_rule": "all policies and counterfactuals from this scenario stay in one split",
+  "transition_rows": 28,
+  "transitions_sha256": "26ffc2c6b84fdea7e28a54f33fdc3e8e849009457bb8c549b5ccbe744cd11785",
+  "units": "abstract payload and resource blocks; timing is uncalibrated",
+  "utility": "sum_served_minus_0.5_queue_minus_0.01_allocated_blocks"
+}

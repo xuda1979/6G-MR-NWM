@@ -1,4 +1,4 @@
-.PHONY: test lint smoke reproduce resume report verify verify-exact paper
+.PHONY: test lint smoke planner-smoke reproduce resume report verify verify-exact paper
 
 SMOKE_ARGS = --steps 2 --seeds 11 --eval-size 8 --latency-repeats 3 --checkpoints --output runs/smoke
 
@@ -13,6 +13,9 @@ smoke:
 	python train_and_eval.py $(SMOKE_ARGS) --overwrite
 	python train_and_eval.py $(SMOKE_ARGS) --resume
 	python scripts/verify_results.py --results runs/smoke --output runs/smoke/verification.json
+
+planner-smoke:
+	python scripts/planner_demo.py --steps 4 --output runs/planner-smoke --overwrite
 
 reproduce:
 	python train_and_eval.py --steps 300 --seeds 11 22 33 --checkpoints --output runs/reference
