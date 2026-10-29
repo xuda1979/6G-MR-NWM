@@ -1,0 +1,174 @@
+\subsection{World model, planner, and optional policy}
+\label{sec:planner-actions}
+An action-conditioned world model predicts consequences; a planner selects
+actions; a policy network amortizes that selection. These are distinct objects.
+For partially observed deployments, let $h_t$ contain only observations available
+by decision time, their ages, and previous applied actions. The proposed
+transition model is $F_\theta(\cdot\mid h_t,\bar a_t,c_T,\Delta_t)$, where
+$\bar a_t$ is the action that actually takes effect and $\Delta_t$ is its
+duration. A requested action can be rejected, delayed, or clipped, and must not
+silently replace $\bar a_t$ in a training record. A receding-horizon planner would
+solve
+\begin{equation}
+ A^* = \arg\max_{A\in\mathcal A(h_t)}
+ \E_{F_\theta}\!\left[\sum_{k=0}^{H_p-1}\gamma^k
+ U(\hat s_{t+k+1},a_{t+k};w_T)\right],
+ \label{eq:planner-contract}
+\end{equation}
+Here $H_p$ is the planning horizon, $\gamma\in[0,1]$ a discount factor, and
+$\mathcal A(h_t)$ the feasible candidate-sequence set. The search respects
+actuator limits, service constraints, and a fixed computation budget.
+Only its first accepted action is executed before replanning from new evidence.
+Finite enumeration, sampling, or model predictive control can implement this
+planner without training an actor. An optional actor
+$\pi_\phi(a\mid h_t,w_T)$ can later be trained from evaluated planner decisions
+or by reinforcement learning. Historical operator actions are behavior samples,
+not automatically optimal-action labels.
+
+Equation~\eqref{eq:planner-contract} is a deployment contract, not a reported
+closed-loop result. The implemented \texttt{planning\_audit} ranks a finite grid
+of two-link power vectors by \emph{one-step} utility. It repeats each candidate
+over the forecast call but scores only its first predicted state; it neither
+searches general action sequences nor trains an actor.
+
+\subsection{A bounded, hierarchical RAN action space}
+Table~\ref{tab:planner-actions} identifies actuators rather than listing KPIs
+as actions. A slow controller can choose slice budgets, scheduler modes, and
+power envelopes; a local controller realizes the corresponding fast allocations.
+The same actuator must have one owner per control interval. The planner may
+change only fields exposed by the selected simulator or execution interface;
+capability masks disable unsupported actions. Neither the slow language backbone
+nor a nominal model step implies permission to perform slot-level scheduling
+through a Near-RT RIC. Placement and deadlines require a separate integration
+measurement~\cite{oran2026}.
+
+\begin{table*}[t]
+\centering
+\small
+\caption{Proposed RAN action contract. Only the first row is exercised in the
+current synthetic decision audit. The other rows define scoped extensions,
+not implemented or experimentally validated capabilities. Rates describe
+ownership and dependencies, not measured execution deadlines.}
+\label{tab:planner-actions}
+\begin{tabular}{p{0.15\textwidth}p{0.27\textwidth}p{0.25\textwidth}p{0.23\textwidth}}
+\toprule
+Action family & Decision variables & Rate and required evidence & Essential limits \\
+\midrule
+Power / interference & Per-link power or power envelope; current reference uses
+two normalized powers & Local fast adjustment under slower envelopes;
+applied power, channel/interference, load & Total/per-link power, ramp rate,
+neighbor interference \\
+Resources / scheduling & Slice PRB or RBG budget; scheduler mode; optionally local
+UE allocations & Budgets/modes at a supervisory rate; local scheduling faster;
+queue, traffic, CQI, granted resources & Resource conservation, minimum service,
+integer allocations, one actuator owner \\
+Beam management & Codebook beam, candidate set, sweep/measurement trigger &
+Channel/blockage dependent; beam powers, alignment, switching feedback & Valid
+codebook, switching and measurement overhead \\
+Mobility / association & Target cell, handover trigger or parameters, association &
+Event driven; neighbor measurements and handover outcomes & Dwell/hysteresis,
+interruption cost, reachable target \\
+Admission / energy & Admit or defer traffic; carrier/cell sleep and wake &
+Load driven, with slower activation effects; demand and energy measurements &
+Coverage, wake delay, service obligations \\
+Measurement / reporting & Measurement period, report rate, sensor activation &
+Information refresh at multiple rates; observation ages, acquisition cost &
+Maximum staleness and acquisition budget; model the changed observation process \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Throughput, delay, and energy are outcomes or objective terms, not directly
+commandable actions. External traffic, mobility, and channel evolution are
+exogenous unless a particular task explicitly controls them. Objective weights
+are policy configuration, not physical interventions. Selecting a model,
+refreshing context, or requesting replanning is a supervisory operation; it is
+not evidence that a radio action was applied. Edge offloading and cache placement
+would require additional compute/cache state and actuators and are outside this
+paper's evaluated action space. Every extension also needs an explicit
+hold/fallback behavior; zero transmit power is not a universal safe fallback.
+
+\subsection{What public data can supervise}
+\label{sec:action-data}
+The absence of action logs in UC6 and UCC production traces does not imply that
+all public wireless datasets lack action information. Three evidence types
+must be separated.
+
+\paragraph{Passive commercial observations.}
+UC6 and UCC support observation forecasting, as evaluated in
+Section~\ref{sec:uc6}. They do not provide the applied RAN control and effective
+time needed to identify power or resource interventions. Unknown actions must
+be masked rather than encoded as zero power.
+
+\paragraph{Measured alternatives for beam selection.}
+DeepSense task releases include measured beam-power vectors and best-beam
+indices derived from them~\cite{deepsensebeam}. These can supervise beam
+selection and, with a matched evaluation target, ranking loss relative to the
+measured best beam. An index derived by taking an argmax is not an executed
+control trajectory. Beam sweeps alone do not identify queue evolution,
+handover interruption, or the long-term effects of changing beams. The measured
+power vector must be a target rather than an unavailable decision-time input.
+
+\paragraph{Configuration-conditioned RF-emulator experiments.}
+The public Colosseum COMMAG and ColO-RAN releases document slicing allocations
+and RR/WF/PF scheduling configurations~\cite{commagdata,colorandata}.
+Our source audit on 29 October 2026 downloaded one per-UE CSV from each release
+and found timestamp, \texttt{slice\_prb}, \texttt{scheduling\_policy},
+\texttt{power\_multiplier}, queue, CQI, throughput, and requested/granted-resource
+fields. Both inspected files contain a single resource configuration,
+scheduler mode, and power multiplier; a column's presence is not evidence of
+intervention coverage. The COMMAG README describes a resizing schedule, but
+that schedule cannot substitute for changes observed in a particular CSV.
+The source revisions, sample paths, hashes, and findings are recorded in the
+repository's action-data audit.
+
+Commercial Traffic Twinning provides a complementary collection: a
+one-BS/eight-UE Colosseum experiment replays commercial traffic under five
+slice-resource configurations and two scheduling modes, with timestamped
+PHY/MAC/application measurements~\cite{twinning2024}. Those interventions and
+feedback occur in the RF emulator; the commercial origin of the offered traffic
+does not make the resulting action-response trajectories production-network
+interventions. Its published MAC counters aggregate over 250~ms and do not
+recover individual slot allocations. This audit inspected its documentation,
+not its full data archives.
+
+These releases are candidates for \emph{restricted}, configuration-conditioned
+training after entity, unit, timing, coverage, and license checks. Constant-action
+runs can teach within-configuration responses, but do not alone identify
+switching transients or arbitrary multistep control. Resource demand and grants
+aggregated during an interval are not automatically decision-time actions.
+Trial identifiers or future KPI windows must not leak into planner inputs.
+None of these releases has been used to train the models reported here, and
+none establishes a complete, jointly observed action space for Table~\ref{tab:planner-actions}.
+
+\subsection{Closing action-coverage gaps with controlled simulation}
+For the broad sequential-control extension, our proposed data route combines
+measured representations and restricted public control experiments with
+\emph{explicitly labeled} simulator interventions. Simulation is not necessary
+for every task: measured beam-selection supervision already exists. It is a
+practical source of missing action coverage and switching outcomes when
+corresponding controlled measurements are unavailable.
+
+The first extension should retain power control as a synthetic regression
+test and separately study slice budgets plus scheduler selection in a
+packet-level environment. It should not claim simultaneous validation of
+beams, handovers, energy, and admission. ns-3/5G-LENA offers channel, queue,
+scheduler, traffic, and power-control components~\cite{lena2026}; the chosen
+version still needs task-specific actuator hooks and logging. A propagation
+or ray-tracing model alone does not generate scheduler/queue feedback.
+
+Each episode should preserve available observation history, exogenous inputs,
+requested and applied actions, effective times and durations, execution status,
+subsequent independently computed KPI/cost measurements, behavior policy,
+simulator version, seeds, and provenance. Collect rule-based and varied
+feasible policies, not only an expert's preferred actions. From a saved simulator
+state, replay alternatives with matched exogenous realizations to measure action
+effects, retaining the shared branch origin for grouped train/test splitting.
+Fit action-conditioned dynamics first; evaluate a bounded search planner next;
+distill an actor only if search latency justifies it. Report multistep error,
+action-ranking regret, realized return, service violations, switching costs,
+and total decision latency against rules and an action-independent predictor.
+Use held-out scenarios and independently acquired testbed/field feedback before
+claiming transfer. LLMs may propose traffic scenarios or constraints, but the
+simulator or instrumented network must compute physical outcomes. Synthetic,
+RF-emulator, derived-label, and field evidence remain separate throughout.
