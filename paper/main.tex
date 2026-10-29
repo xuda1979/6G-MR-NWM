@@ -166,6 +166,8 @@ target for selected functions, rather than a consequence of assigning a module
 to a DU. Likewise, $K$ is a modeling hyperparameter here; no micro-step in the
 toy simulator is calibrated to a transmission interval.
 
+\input{planning_actions.tex}
+
 \section{Lightweight Reference Variant and Training}
 \subsection{Slow heterogeneous mixture}
 At each macro step, token embeddings for intent, a state projection, a context
@@ -633,7 +635,7 @@ preserved in the release project; their state dictionaries can be re-evaluated
 using the supplied script. Code is distributed under the included MIT license.
 The manuscript is a research preprint and makes no claim of peer review.
 
-\begin{thebibliography}{12}
+\begin{thebibliography}{20}
 \bibitem{oran2026} ETSI, ``O-RAN Architecture Description,'' ETSI TS 103 982,
 V14.0.0, Mar. 2026, Secs. 5.2 and 5.3.2.
 \href{https://www.etsi.org/deliver/etsi_ts/103900_103999/103982/14.00.00_60/ts_103982v140000p.pdf}{ETSI specification}.
@@ -666,5 +668,23 @@ CC~BY~4.0, 2023. \url{https://zenodo.org/records/10037164}.
 ``Beyond Throughput, The Next Generation: A 5G Dataset with Channel and
 Context Metrics,'' ACM Multimedia Systems Conference (MMSys), 2020.
 Dataset: \url{https://github.com/uccmisl/5Gdataset} (GPL-3.0).
+\bibitem{deepsensebeam} DeepSense 6G, ``Position-Aided Beam Prediction,''
+official task description and measured beam-power supervision, accessed
+Oct. 29, 2026. \url{https://www.deepsense6g.net/position-aided-beam-prediction/}.
+\bibitem{commagdata} L. Bonati, S. D'Oro, M. Polese, S. Basagni, and T. Melodia,
+``Intelligence and Learning in O-RAN for Data-driven NextG Cellular Networks,''
+\emph{IEEE Communications Magazine}, vol. 59, no. 10, pp. 21--27, 2021.
+Dataset: \url{https://github.com/wineslab/colosseum-oran-commag-dataset}.
+\bibitem{colorandata} M. Polese, L. Bonati, S. D'Oro, S. Basagni, and T. Melodia,
+``ColO-RAN: Developing Machine Learning-based xApps for Open RAN Closed-loop
+Control on Programmable Experimental Platforms,'' \emph{IEEE Transactions on
+Mobile Computing}, early access, 2022.
+Dataset: \url{https://github.com/wineslab/colosseum-oran-coloran-dataset}.
+\bibitem{twinning2024} L. Bonati, R. Shirkhani, C. Fiandrino, S. Maxenti,
+S. D'Oro, M. Polese, and T. Melodia, ``Twinning Commercial Network Traces on
+Experimental Open RAN Platforms,'' in \emph{ACM WiNTECH}, 2024,
+doi:10.1145/3636534.3697320. arXiv:2409.16217.
+\bibitem{lena2026} CTTC, ``5G-LENA Features \& Roadmap,'' official feature
+documentation, accessed Oct. 29, 2026. \url{https://5g-lena.cttc.es/features/}.
 \end{thebibliography}
 \end{document}
