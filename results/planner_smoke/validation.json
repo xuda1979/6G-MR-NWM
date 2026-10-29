@@ -1,0 +1,68 @@
+{
+  "baseline_commit": "b353b935e910f7052980a1621938fa86ffb09f8e",
+  "commands": [
+    "make lint test",
+    "make smoke planner-smoke verify",
+    "make paper"
+  ],
+  "file_sha256": {
+    "scripts/planner_demo.py": "c8bb3fbdbde9be7efb5ff8a56a0a64202c587cb2f8f8654ef8a3ca3aaf690e06",
+    "src/mr_nwm/action_space.py": "2431a505c18ccab457cf996b0bc5b6758dbc7b90f0ffb464fdd181a8e859a5bf",
+    "src/mr_nwm/control_planner.py": "261210adf39f18d4e4995edacb0504b2b928ed77a3e466abe850b17ad4d1450f",
+    "src/mr_nwm/control_records.py": "7076df7d6935ea521dc470465be6ac2586f4e03b953d4948b94e84471664261d",
+    "src/mr_nwm/planning_adapters.py": "8125d2a3eee8cc3b9fb4d4b32e3bf6bff5c8e15dbc9f277c5f57053a442fc704",
+    "src/mr_nwm/slicing.py": "9cede26012faf6fdc237e19d556d482a23800612b28179d436d960002bf91233",
+    "tests/test_control_planner.py": "84cd598d44b6a2f1d1fe44a372611194350cf36f5deb0c60f60bb6b4952413a4",
+    "tests/test_planner_demo.py": "ccd3ebccb4dd6fcc2d57f5f58fce3851c7c96bf28824686a61fa0bfa2b0e985e",
+    "tests/test_planning_adapters.py": "150d93c059e28d94c1091ce23ede2fadd3905cccc539c7c0acad09b08fab479c",
+    "tests/test_slicing.py": "5cd2466b65192788f989e122eea4e853861f8215173450d27502177c4f2be7f5"
+  },
+  "independent_review": {
+    "critical_review": [
+      "bounded sequence search and input-vector parsing",
+      "independent discounted/switching/slew oracle",
+      "candidate isolation",
+      "mutable forecast generator alias reproduced and fixed",
+      "applied-action records and causal clock checks",
+      "synthetic provenance and shared split groups",
+      "raw utility recomputation and complete action coverage",
+      "existing checkpoint/foundation API and mode reset"
+    ],
+    "legacy_files_unchanged": [
+      "src/mr_nwm/model.py",
+      "src/mr_nwm/data.py",
+      "src/mr_nwm/planning.py",
+      "src/mr_nwm/experiment.py"
+    ],
+    "limitations": [
+      "CPU Python3.12 and Torch2.5.1 only",
+      "no field, NPU, RIC/E2, learned slice world model or actor validation",
+      "callback-hidden mutable state must be reset by caller; deadline is non-preemptive",
+      "a short held-out seed23 smoke had lower MPC return than greedy, so no general performance advantage is established"
+    ],
+    "published_results_unchanged": true,
+    "source_sha256": {
+      "scripts/planner_demo.py": "c8bb3fbdbde9be7efb5ff8a56a0a64202c587cb2f8f8654ef8a3ca3aaf690e06",
+      "src/mr_nwm/action_space.py": "2431a505c18ccab457cf996b0bc5b6758dbc7b90f0ffb464fdd181a8e859a5bf",
+      "src/mr_nwm/control_planner.py": "261210adf39f18d4e4995edacb0504b2b928ed77a3e466abe850b17ad4d1450f",
+      "src/mr_nwm/control_records.py": "7076df7d6935ea521dc470465be6ac2586f4e03b953d4948b94e84471664261d",
+      "src/mr_nwm/planning_adapters.py": "8125d2a3eee8cc3b9fb4d4b32e3bf6bff5c8e15dbc9f277c5f57053a442fc704",
+      "src/mr_nwm/slicing.py": "9cede26012faf6fdc237e19d556d482a23800612b28179d436d960002bf91233"
+    },
+    "verdict": "PASS"
+  },
+  "limitations": [
+    "actual runtime CPU Python3.12/Torch2.5.1; Python3.10 runtime delegated to CI",
+    "no NPU, field, RIC/E2 or learned-slice control validation"
+  ],
+  "python310_syntax": "PASS",
+  "reference_evaluations": 24,
+  "reference_metrics": "all matched",
+  "schema_version": 1,
+  "tests": {
+    "passed": 181,
+    "skip_reason": "UCC production dataset not downloaded",
+    "skipped": 1
+  },
+  "verdict": "PASS"
+}

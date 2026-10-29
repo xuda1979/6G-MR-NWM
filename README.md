@@ -18,6 +18,7 @@ Authors are blank in the manuscript and PDF metadata.
 [架构与多时间尺度详解](docs/ARCHITECTURE_CN.md) ·
 [公开免费真实数据集](docs/REAL_DATASETS_CN.md) ·
 [基站规划器动作设计](docs/PLANNER_ACTIONS_CN.md) ·
+[规划器代码、运行与验证](docs/PLANNER_IMPLEMENTATION_CN.md) ·
 [公开动作数据核查与训练方案](docs/PLANNER_ACTIONS_AND_DATA_CN.md) ·
 [Measured results](results/SUMMARY.md) · [Review and corrections](docs/REVIEW.md) ·
 [Reproduction protocol](docs/REPRODUCIBILITY.md) ·
@@ -51,7 +52,15 @@ Public beam-selection labels and Colosseum resource/scheduler configurations
 provide restricted supervision, with RF-emulator evidence kept separate from
 field measurements. The [action-data audit](docs/PLANNER_ACTIONS_AND_DATA_CN.md)
 records two actual CSV inspections, coverage limits, and a proposed simulation
-protocol. These additions report no new training or closed-loop result.
+protocol. The additive `BoundedPlanner` now implements finite-horizon search,
+explicit action constraints/masks, and independent candidate rollouts. A separate
+two-slice fluid-queue demo exports confirmed synthetic action transitions and
+exercises an existing reference checkpoint. It uses an exact simulator predictor;
+no slice model or actor was trained, and no field-control advantage is claimed.
+
+Run `make planner-smoke`; see [implementation and validation](docs/PLANNER_IMPLEMENTATION_CN.md).
+The published one-step audit, objectives, checkpoint metrics, and real-data
+forecasters retain their original evaluation contracts.
 
 ## Role in 6G Agentic RAN
 

@@ -25,11 +25,19 @@ $\pi_\phi(a\mid h_t,w_T)$ can later be trained from evaluated planner decisions
 or by reinforcement learning. Historical operator actions are behavior samples,
 not automatically optimal-action labels.
 
-Equation~\eqref{eq:planner-contract} is a deployment contract, not a reported
-closed-loop result. The implemented \texttt{planning\_audit} ranks a finite grid
+Equation~\eqref{eq:planner-contract} defines the planning contract. The original
+\texttt{planning\_audit} ranks a finite grid
 of two-link power vectors by \emph{one-step} utility. It repeats each candidate
 over the forecast call but scores only its first predicted state; it neither
 searches general action sequences nor trains an actor.
+
+An additive implementation now supplies bounded finite-horizon enumeration,
+capability and slew constraints, independent candidate state, and confirmed-action
+transition records. A separate two-slice fluid-queue smoke uses the exact
+synthetic transition as its predictor; another probe connects an existing
+reference checkpoint. Neither trains a slice world model or actor. These
+implementation checks do not alter the published one-step measurements or
+establish a control advantage, field transfer, or a radio deadline.
 
 \subsection{A bounded, hierarchical RAN action space}
 Table~\ref{tab:planner-actions} identifies actuators rather than listing KPIs
@@ -45,9 +53,10 @@ measurement~\cite{oran2026}.
 \begin{table*}[t]
 \centering
 \small
-\caption{Proposed RAN action contract. Only the first row is exercised in the
-current synthetic decision audit. The other rows define scoped extensions,
-not implemented or experimentally validated capabilities. Rates describe
+\caption{RAN action contract. Only the first row is exercised in the
+original synthetic decision audit. Resource/scheduling now has a separate
+fluid-queue implementation check; other rows remain scoped extensions.
+No row establishes field-control validation. Rates describe
 ownership and dependencies, not measured execution deadlines.}
 \label{tab:planner-actions}
 \begin{tabular}{p{0.15\textwidth}p{0.27\textwidth}p{0.25\textwidth}p{0.23\textwidth}}
